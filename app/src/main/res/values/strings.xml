@@ -14,5 +14,28 @@
     <string name="pref_location_title">Location</string>
     <string name="pref_location_default_val" translatable="false">Paris</string>
 
+    <string name="action_show_on_map">Map Location</string>
+    <string name="action_share">Share</string>
+
+    <string name="pref_unit_key">unit_type</string>
+    <string name="pref_unit_type_title">Units</string>
+    <string name="pref_unit_type_dialog_title">Units</string>
+
+    <string name="pref_unit_metric">cel</string>
+    <string name="pref_unit_imperial">far</string>
+
+    <string name="pref_unit_metric_val">°C</string>
+    <string name="pref_unit_imperial_val">°F</string>
+
+    <string-array name="pref_unit_type_entries">
+        <item>@string/pref_unit_metric_val</item>
+        <item>@string/pref_unit_imperial_val</item>
+    </string-array>
+
+    <string-array name="pref_unit_type_entries_values">
+        <item>@string/pref_unit_metric</item>
+        <item>@string/pref_unit_imperial</item>
+    </string-array>
+
 
 </resources>
