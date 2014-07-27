@@ -12,7 +12,7 @@
     <string name="title_activity_settings">Settings</string>
     <string name="pref_location_key" translatable="false">Location</string>
     <string name="pref_location_title">Location</string>
-    <string name="pref_location_default_val" translatable="false">Paris</string>
+    <string name="pref_location_default_val" translatable="false">75001</string>
 
     <string name="action_show_on_map">Map Location</string>
     <string name="action_share">Share</string>
