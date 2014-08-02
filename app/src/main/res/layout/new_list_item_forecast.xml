@@ -1,11 +1,10 @@
-<LinearLayout
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:padding="16dp"
+    android:gravity="center"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="horizontal"
+    android:padding="16dp">
     <!--
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -14,9 +13,9 @@
     -->
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_item_date_textview"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/list_item_date_textview" />
+        android:layout_height="match_parent" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -24,9 +23,9 @@
         android:text=" - " />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_item_forecast_textview"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/list_item_forecast_textview" />
+        android:layout_height="match_parent" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -34,9 +33,9 @@
         android:text=" - " />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_item_high_textview"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/list_item_high_textview" />
+        android:layout_height="match_parent" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -44,8 +43,8 @@
         android:text="/" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_item_low_textview"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/list_item_low_textview" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

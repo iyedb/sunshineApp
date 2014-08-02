@@ -32,10 +32,6 @@ import java.util.Date;
  */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private final static String TAG = ForecastFragment.class.getSimpleName();
-
-    private static final int FORECAST_LOADER = 0;
-
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
     public static final int COL_WEATHER_ID = 0;
@@ -44,6 +40,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int COL_WEATHER_MAX_TEMP = 3;
     public static final int COL_WEATHER_MIN_TEMP = 4;
     public static final int COL_LOCATION_SETTING = 5;
+    private final static String TAG = ForecastFragment.class.getSimpleName();
+    private static final int FORECAST_LOADER = 0;
     // For the forecast view we're showing only a small subset of the stored data.
     // Specify the columns we need.
     private static final String[] FORECAST_COLUMNS = {
@@ -105,7 +103,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
 
         mForecastAdapter = new SimpleCursorAdapter(getActivity(),
-                R.layout.new_list_item_forecast,
+                R.layout.list_item_forecast5,
                 null,
                 new String[]{
                         WeatherEntry.COLUMN_DATETEXT,
