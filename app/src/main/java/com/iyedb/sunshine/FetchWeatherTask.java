@@ -24,8 +24,8 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.iyedb.sunshine.data.WeatherContract;
 import com.iyedb.sunshine.data.WeatherContract.LocationEntry;
@@ -45,16 +45,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
+public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
     private final Context mContext;
     private boolean DEBUG = true;
-    private ArrayAdapter<String> mForecastAdapter;
+    private SimpleCursorAdapter mForecastAdapter;
 
-    public FetchWeatherTask(Context context, ArrayAdapter<String> forecastAdapter) {
+    public FetchWeatherTask(Context context) {
         mContext = context;
-        mForecastAdapter = forecastAdapter;
     }
 
     /* The date/time conversion code is going to be moved outside the asynctask later,
@@ -147,7 +146,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays,
+    private void getWeatherDataFromJson(String forecastJsonStr, int numDays,
                                             String locationSetting)
             throws JSONException {
 
@@ -194,9 +193,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                 locationSetting, cityName, cityLatitude, cityLongitude);
 
         // Get and insert the new weather information into the database
-        Vector<ContentValues> cVVector = new Vector<ContentValues>(weatherArray.length());
+        Vector<ContentValues> cvVector = new Vector<ContentValues>(weatherArray.length());
 
-        String[] resultStrs = new String[numDays];
 
         for (int i = 0; i < weatherArray.length(); i++) {
             // These are the values that will be collected.
@@ -253,15 +251,13 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             weatherValues.put(WeatherEntry.COLUMN_SHORT_DESC, description);
             weatherValues.put(WeatherEntry.COLUMN_WEATHER_ID, weatherId);
 
-            cVVector.add(weatherValues);
-
-            String highAndLow = formatHighLows(high, low);
-            String day = getReadableDateString(dateTime);
-            resultStrs[i] = day + " - " + description + " - " + highAndLow;
+            cvVector.add(weatherValues);
         }
-        if (cVVector.size() > 0) {
-            ContentValues[] cvArray = new ContentValues[cVVector.size()];
-            cVVector.toArray(cvArray);
+
+        if (cvVector.size() > 0) {
+            ContentValues[] cvArray = new ContentValues[cvVector.size()];
+            cvVector.toArray(cvArray);
+
             int rowsInserted = mContext.getContentResolver()
                     .bulkInsert(WeatherEntry.CONTENT_URI, cvArray);
             Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of weather data");
@@ -269,6 +265,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             // turn it on and off, and so that it's easy to see what you can rip out if
             // you ever want to remove it.
             if (DEBUG) {
+
                 Cursor weatherCursor = mContext.getContentResolver().query(
                         WeatherEntry.CONTENT_URI,
                         null,
@@ -278,59 +275,21 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                 );
 
                 if (weatherCursor.moveToFirst()) {
-                    ContentValues resultValues = new ContentValues();
-                    DatabaseUtils.cursorRowToContentValues(weatherCursor, resultValues);
                     Log.v(LOG_TAG, "Query succeeded! **********");
-                    for (String key : resultValues.keySet()) {
-                        Log.v(LOG_TAG, key + ": " + resultValues.getAsString(key));
-                    }
+
                 } else {
                     Log.v(LOG_TAG, "Query failed! :( **********");
                 }
             }
         }
-        return resultStrs;
     }
 
 
     @Override
-    protected String[] doInBackground(String... params) {
+    protected Void doInBackground(String... params) {
 
+        Log.d(LOG_TAG, "in doInBackground");
 
-        Cursor cursor = mContext.getContentResolver().query(WeatherEntry.CONTENT_URI,
-                new String[]{WeatherEntry._ID, WeatherEntry.COLUMN_LOC_KEY},
-                null,
-                null,
-                null);
-        Log.d(LOG_TAG, "Weather table contents:");
-        while (cursor.moveToNext()) {
-
-            ContentValues resultValues = new ContentValues();
-            DatabaseUtils.cursorRowToContentValues(cursor, resultValues);
-
-            for (String key : resultValues.keySet()) {
-                Log.v(LOG_TAG, key + ": " + resultValues.getAsString(key));
-            }
-        }
-
-
-        Cursor cursorLoc = mContext.getContentResolver().query(LocationEntry.CONTENT_URI,
-                new String[]{LocationEntry._ID, LocationEntry.COLUMN_CITY_NAME},
-                null,
-                null,
-                null);
-
-
-        Log.d(LOG_TAG, "Location table contents:");
-        while (cursorLoc.moveToNext()) {
-
-            ContentValues resultValues = new ContentValues();
-            DatabaseUtils.cursorRowToContentValues(cursorLoc, resultValues);
-
-            for (String key : resultValues.keySet()) {
-                Log.v(LOG_TAG, key + ": " + resultValues.getAsString(key));
-            }
-        }
 
         // If there's no zip code, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
@@ -419,7 +378,58 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         }
 
         try {
-            return getWeatherDataFromJson(forecastJsonStr, numDays, locationParam);
+
+            getWeatherDataFromJson(forecastJsonStr, numDays, locationParam);
+
+            if (DEBUG) {
+                Cursor cursor = mContext.getContentResolver().query(WeatherEntry.CONTENT_URI,
+                        new String[]{WeatherEntry._ID, WeatherEntry.COLUMN_LOC_KEY},
+                        null,
+                        null,
+                        null);
+
+                Log.d(LOG_TAG, "Weather table contents:");
+                while (cursor.moveToNext()) {
+
+                    ContentValues resultValues = new ContentValues();
+                    DatabaseUtils.cursorRowToContentValues(cursor, resultValues);
+
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String key : resultValues.keySet()) {
+                        stringBuilder.append(key).append(':')
+                                .append(resultValues.getAsString(key))
+                                .append('|');
+
+                    }
+                    Log.v(LOG_TAG, stringBuilder.toString());
+                }
+
+
+                Cursor cursorLoc = mContext.getContentResolver().query(LocationEntry.CONTENT_URI,
+                        new String[]{LocationEntry._ID, LocationEntry.COLUMN_LOCATION_SETTING,
+                                LocationEntry.COLUMN_CITY_NAME},
+                        null,
+                        null,
+                        null);
+
+
+                Log.d(LOG_TAG, "Location table contents:");
+                while (cursorLoc.moveToNext()) {
+
+                    ContentValues resultValues = new ContentValues();
+                    DatabaseUtils.cursorRowToContentValues(cursorLoc, resultValues);
+
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String key : resultValues.keySet()) {
+                        stringBuilder.append(key).append(':')
+                                .append(resultValues.getAsString(key))
+                                .append('|');
+
+                    }
+                    Log.v(LOG_TAG, stringBuilder.toString());
+                }
+            }
+
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
@@ -428,14 +438,5 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         return null;
     }
 
-    @Override
-    protected void onPostExecute(String[] result) {
-        if (result != null) {
-            mForecastAdapter.clear();
-            for (String dayForecastStr : result) {
-                mForecastAdapter.add(dayForecastStr);
-            }
-            // New data is back from the server.  Hooray!
-        }
-    }
+
 }

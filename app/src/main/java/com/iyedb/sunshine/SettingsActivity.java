@@ -5,6 +5,9 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.iyedb.sunshine.data.WeatherContract;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -17,6 +20,8 @@ import android.preference.PreferenceManager;
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
 
+    private boolean mBindingPreference;
+    private final static String TAG = SettingsActivity.class.getSimpleName();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,7 @@ public class SettingsActivity extends PreferenceActivity
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(this);
 
+        mBindingPreference = true;
         // Trigger the listener immediately with the preference's
         // current value.
         onPreferenceChange(preference,
@@ -45,6 +51,8 @@ public class SettingsActivity extends PreferenceActivity
                         .getDefaultSharedPreferences(preference.getContext())
                         .getString(preference.getKey(), "")
         );
+
+        mBindingPreference = false;
     }
 
     @Override
@@ -63,6 +71,20 @@ public class SettingsActivity extends PreferenceActivity
             // For other preferences, set the summary to the value's simple string representation.
             preference.setSummary(stringValue);
         }
+
+        if ( !mBindingPreference ) {
+            if (preference.getKey().equals(getString(R.string.pref_location_key))) {
+                FetchWeatherTask weatherTask = new FetchWeatherTask(this);
+                String location = value.toString();
+                weatherTask.execute(location);
+
+            } else {
+                // notify code that weather may be impacted
+                Log.d(TAG, "Notify uri changed" + WeatherContract.WeatherEntry.CONTENT_URI);
+                getContentResolver().notifyChange(WeatherContract.WeatherEntry.CONTENT_URI, null);
+            }
+        }
+
         return true;
     }
 
