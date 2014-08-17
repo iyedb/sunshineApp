@@ -14,16 +14,26 @@ import android.view.MenuItem;
 public class MainActivity extends ActionBarActivity {
 
     private final String TAG = MainActivity.class.getSimpleName();
+    private boolean mTwoPane = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
-                    .commit();
+        setContentView(R.layout.activity_main);
+
+        if (findViewById(R.id.weather_detail_container) != null) {
+            mTwoPane = true;
+
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.weather_detail_container, new DetailFragment())
+                        .commit();
+            }
         }
+        else {
+            mTwoPane = false;
+        }
+
         Log.d(TAG, "OnCreate called");
     }
 
@@ -64,7 +74,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.my, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -90,6 +100,7 @@ public class MainActivity extends ActionBarActivity {
 
         String location = sharedPreferences.getString(getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default_val));
+
         Uri geoLocation = Uri.parse("geo:0:0?").buildUpon()
                 .appendQueryParameter("q", location).build();
         Intent intent = new Intent(Intent.ACTION_VIEW);

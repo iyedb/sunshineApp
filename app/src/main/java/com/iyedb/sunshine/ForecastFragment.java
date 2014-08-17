@@ -16,7 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.iyedb.sunshine.data.WeatherContract;
 import com.iyedb.sunshine.data.WeatherContract.LocationEntry;
@@ -62,6 +64,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private String mLocation;
     private ForecastAdapter mForecastAdapter;
+    TextView listViewHeaderTv;
 
     public ForecastFragment() {
     }
@@ -100,7 +103,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_my, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
@@ -149,19 +152,32 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         });
         */
         ListView lv = (ListView) rootView.findViewById(R.id.listview_forecast);
+        listViewHeaderTv = (TextView) inflater.inflate(R.layout.list_item_forecast_location,
+                null, false);
+        listViewHeaderTv.setText("Forecast for " + Utility.getPreferredLocation(getActivity()));
+        lv.addHeaderView(listViewHeaderTv);
         lv.setAdapter(mForecastAdapter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                ForecastAdapter adapter = (ForecastAdapter)parent.getAdapter();
-                Cursor cursor = adapter.getCursor();
-                if (cursor != null && cursor.moveToPosition(position)) {
+                if (position == 0) {
+                    openLocationInMap();
+                }
+                if (position > 0) {
+                    ForecastAdapter adapter =
+                            (ForecastAdapter) ((HeaderViewListAdapter)parent.getAdapter()).getWrappedAdapter();
 
-                    Intent intent = new Intent(getActivity(), DetailActivity.class)
-                            .putExtra(DetailActivity.DATE_KEY, cursor.getString(COL_WEATHER_DATE));
-                    startActivity(intent);
+                    Cursor cursor = adapter.getCursor();
+
+                    if (cursor != null && cursor.moveToPosition(position - 1)) {
+
+                        Intent intent = new Intent(getActivity(), DetailActivity.class)
+                                .putExtra(DetailActivity.DATE_KEY, cursor.getString(COL_WEATHER_DATE));
+
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -176,6 +192,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onResume();
 
         Log.d(TAG, "onResume");
+        listViewHeaderTv.setText("Forcast for " + Utility.getPreferredLocation(getActivity()));
 
         if (mLocation != null && !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
             Log.d(TAG, "onResume: restartLoader()");
@@ -250,6 +267,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         mForecastAdapter.swapCursor(cursor);
         int idx = cursor.getColumnIndexOrThrow(LocationEntry.COLUMN_LOCATION_SETTING);
+        int idx_weather_id = cursor.getColumnIndexOrThrow(WeatherEntry.COLUMN_WEATHER_ID);
+
+        Log.d(TAG, "COLUMN_WEATHER_ID = " + Integer.toString(idx_weather_id));
         Log.d(TAG, "COLUMN_LOCATION_SETTING = " + Integer.toString(idx));
         if (cursor.getCount() != 0)
             Log.d(TAG, "onLoadFinished: loaded some data" );
@@ -262,5 +282,24 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoaderReset(Loader<Cursor> loader) {
         Log.d(TAG, "onLoaderReset");
         mForecastAdapter.swapCursor(null);
+    }
+
+    private void openLocationInMap() {
+
+
+        String location = Utility.getPreferredLocation(getActivity());
+
+        Uri geoLocation = Uri.parse("geo:0:0?").buildUpon()
+                .appendQueryParameter("q", location).build();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "Could not show " + location + " on a map");
+        }
+
+
     }
 }

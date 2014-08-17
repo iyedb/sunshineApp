@@ -49,7 +49,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
     private final Context mContext;
-    private boolean DEBUG = true;
+    private boolean DEBUG = false;
     private SimpleCursorAdapter mForecastAdapter;
 
     public FetchWeatherTask(Context context) {
@@ -383,7 +383,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
             if (DEBUG) {
                 Cursor cursor = mContext.getContentResolver().query(WeatherEntry.CONTENT_URI,
-                        new String[]{WeatherEntry._ID, WeatherEntry.COLUMN_LOC_KEY},
+                        new String[]{WeatherEntry._ID, WeatherEntry.COLUMN_LOC_KEY, WeatherEntry.COLUMN_WEATHER_ID},
                         null,
                         null,
                         null);

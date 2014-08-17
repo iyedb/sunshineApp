@@ -24,18 +24,19 @@ public class ForecastAdapter extends CursorAdapter {
     private final int VIEW_TYPE_TODAY = 0;
     private final int VIEW_TYPE_FUTURE_DAY = 1;
 
+    public ForecastAdapter(Context context, Cursor c, int flags) {
+        super(context, c, flags);
+    }
+
     @Override
     public int getViewTypeCount() {
+
         return 2;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (position == 0) ? VIEW_TYPE_TODAY: VIEW_TYPE_FUTURE_DAY;
-    }
-
-    public ForecastAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
+        return (position == 0) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
     }
 
     @Override
@@ -46,14 +47,15 @@ public class ForecastAdapter extends CursorAdapter {
 
         if (viewType == VIEW_TYPE_TODAY)
             layoutId = R.layout.list_item_forecast_today;
-         else
+        else if (viewType == VIEW_TYPE_FUTURE_DAY)
             layoutId = R.layout.list_item_forecast5;
 
+        View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
 
-        View view =  LayoutInflater.from(context).inflate(layoutId, parent, false);
 
         ViewHolder holder = new ViewHolder(view);
         view.setTag(holder);
+
         return view;
     }
 
@@ -61,16 +63,25 @@ public class ForecastAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         // Read weather icon ID from cursor
-        int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
+        //int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
+        int viewType = getItemViewType(cursor.getPosition());
 
+
+        int weather_cond_id = Integer.valueOf(cursor.getString(ForecastFragment.COL_WEATHER_WEATHER_ID));
+        int weather_cond_res_id = -1;
+
+        if (viewType == VIEW_TYPE_TODAY) {
+            weather_cond_res_id = Utility.getArtResourceForWeatherCondition(weather_cond_id);
+        } else {
+            weather_cond_res_id = Utility.getIconResourceForWeatherCondition(weather_cond_id);
+        }
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         // Use placeholder image for now
         //ImageView iconView = (ImageView) view.findViewById(R.id.list_item_icon);
         //iconView.setImageResource(R.drawable.ic_launcher_);
-
-        viewHolder.iconView.setImageResource(R.drawable.ic_launcher_);
+        viewHolder.iconView.setImageResource(weather_cond_res_id);
 
         // Read date from cursor
         String dateString = cursor.getString(ForecastFragment.COL_WEATHER_DATE);
@@ -100,8 +111,9 @@ public class ForecastAdapter extends CursorAdapter {
 
         //TextView tvLowTemp = (TextView) view.findViewById(R.id.list_item_low_textview);
         viewHolder.lowTempView.setText(Utility.formatTemperature(context, low, isMetric));
-    }
 
+
+    }
 
 
     public static class ViewHolder {

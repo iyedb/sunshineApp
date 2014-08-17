@@ -5,9 +5,7 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
-    android:textStyle="bold"
-    android:id="@+id/list_item_forecast_textview"
-    android:text="Iyed Bennour">
-
-
+    android:id="@+id/list_item_forecast_location_textview"
+    android:text="Current Location"
+    android:padding="16dp">
 </TextView>

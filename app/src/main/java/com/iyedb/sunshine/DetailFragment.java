@@ -152,16 +152,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Sort order:  Ascending, by date.
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATETEXT + " ASC";
 
-        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
+        Uri weatherForLocationAndDateUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
                 Utility.getPreferredLocation(getActivity()), forecastDate);
 
-        Log.v(LOG_TAG, weatherForLocationUri.toString());
+        Log.v(LOG_TAG, weatherForLocationAndDateUri.toString());
 
         // Now create and return a CursorLoader that will take care of
         // creating a Cursor for the data being displayed.
         return new CursorLoader(
                 getActivity(),
-                weatherForLocationUri,
+                weatherForLocationAndDateUri,
                 FORECAST_COLUMNS,
                 null,
                 null,
@@ -173,7 +173,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         Log.v(LOG_TAG, "In onLoadFinished");
-        if (!data.moveToFirst()) { return; }
+        if (!data.moveToFirst()) {
+            return;
+        }
 
         String dbDate =
                 data.getString(data.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATETEXT));
@@ -221,6 +223,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 );
         mWindView.setText(windSpeed);
 
+        int weather_cond_id = Integer.valueOf(data.getString(COL_WEATHER_WEATHER_ID));
+        int weather_cond_res_id = Utility.getArtResourceForWeatherCondition(weather_cond_id);
+
+        mWeatherImgView.setImageResource(weather_cond_res_id);
 
         // We still need this for the share intent
         mForecastStr = String.format("%s - %s - %s/%s",
