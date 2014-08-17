@@ -165,7 +165,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 if (position == 0) {
                     openLocationInMap();
                 }
-                if (position > 0) {
+                else {
                     ForecastAdapter adapter =
                             (ForecastAdapter) ((HeaderViewListAdapter)parent.getAdapter()).getWrappedAdapter();
 
@@ -286,7 +286,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void openLocationInMap() {
 
-
         String location = Utility.getPreferredLocation(getActivity());
 
         Uri geoLocation = Uri.parse("geo:0:0?").buildUpon()
@@ -299,7 +298,5 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         } else {
             Log.d(TAG, "Could not show " + location + " on a map");
         }
-
-
     }
 }
