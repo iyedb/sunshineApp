@@ -7,5 +7,8 @@
     android:gravity="center_vertical"
     android:id="@+id/list_item_forecast_location_textview"
     android:text="Current Location"
-    android:padding="16dp">
+    android:fontFamily="sans-serif-condensed"
+    android:textAppearance="?android:textAppearanceLarge"
+    android:background="@color/sunshine_blue"
+    >
 </TextView>

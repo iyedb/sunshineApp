@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:paddingTop="16dp">
+    android:paddingTop="16dp"
+    android:background="@color/sunshine_blue">
 
     <LinearLayout
         android:layout_width="0dp"

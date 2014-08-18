@@ -63,8 +63,20 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     };
 
     private String mLocation;
+    boolean mUseTodayView;
+
+    public void useTodayView(boolean flag) {
+        mUseTodayView = flag;
+        if (mForecastAdapter != null) {
+            mForecastAdapter.setmUseTodayViewType(mUseTodayView);
+        }
+    }
+
     private ForecastAdapter mForecastAdapter;
     TextView listViewHeaderTv;
+    ListView mListView;
+    private int mSelectedItemPosition = ListView.INVALID_POSITION;
+    private final String POSITION_KEY = "postion";
 
     public ForecastFragment() {
     }
@@ -103,10 +115,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Log.d(TAG, "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
-
+        mForecastAdapter.setmUseTodayViewType(mUseTodayView);
         /*
         mForecastAdapter = new SimpleCursorAdapter(getActivity(),
                 R.layout.list_item_forecast5,
@@ -151,40 +164,49 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             }
         });
         */
-        ListView lv = (ListView) rootView.findViewById(R.id.listview_forecast);
+        mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
+
         listViewHeaderTv = (TextView) inflater.inflate(R.layout.list_item_forecast_location,
                 null, false);
-        listViewHeaderTv.setText("Forecast for " + Utility.getPreferredLocation(getActivity()));
-        lv.addHeaderView(listViewHeaderTv);
-        lv.setAdapter(mForecastAdapter);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewHeaderTv.setText(Utility.getPreferredLocation(getActivity()));
+        mListView.addHeaderView(listViewHeaderTv);
+        mListView.setAdapter(mForecastAdapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 if (position == 0) {
                     openLocationInMap();
-                }
-                else {
+                } else {
                     ForecastAdapter adapter =
-                            (ForecastAdapter) ((HeaderViewListAdapter)parent.getAdapter()).getWrappedAdapter();
+                            (ForecastAdapter) ((HeaderViewListAdapter) parent.getAdapter()).getWrappedAdapter();
 
                     Cursor cursor = adapter.getCursor();
 
                     if (cursor != null && cursor.moveToPosition(position - 1)) {
-
-                        Intent intent = new Intent(getActivity(), DetailActivity.class)
-                                .putExtra(DetailActivity.DATE_KEY, cursor.getString(COL_WEATHER_DATE));
-
-                        startActivity(intent);
+                        ((Callback) getActivity()).onItemSelected(cursor.getString(COL_WEATHER_DATE));
                     }
+                    mSelectedItemPosition = position;
                 }
             }
         });
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(POSITION_KEY)) {
+            mSelectedItemPosition = savedInstanceState.getInt(POSITION_KEY);
+        }
+
         return rootView;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+        if (mSelectedItemPosition != ListView.INVALID_POSITION)
+            outState.putInt(POSITION_KEY, mSelectedItemPosition);
+    }
 
     @Override
     public void onResume() {
@@ -192,7 +214,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onResume();
 
         Log.d(TAG, "onResume");
-        listViewHeaderTv.setText("Forcast for " + Utility.getPreferredLocation(getActivity()));
+        listViewHeaderTv.setText(Utility.getPreferredLocation(getActivity()));
 
         if (mLocation != null && !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
             Log.d(TAG, "onResume: restartLoader()");
@@ -276,6 +298,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         else
             Log.d(TAG, "onLoadFinished: no data. Database Empty?!");
 
+        if (mSelectedItemPosition != ListView.INVALID_POSITION)
+            mListView.smoothScrollToPosition(mSelectedItemPosition);
     }
 
     @Override
@@ -298,5 +322,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         } else {
             Log.d(TAG, "Could not show " + location + " on a map");
         }
+    }
+
+    interface Callback {
+        public void onItemSelected(String date);
     }
 }
