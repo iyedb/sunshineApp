@@ -53,6 +53,7 @@
 <ScrollView
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_marginLeft="16dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
@@ -65,11 +66,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/detail_day_textview"
+            android:textSize="24sp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Today"
             />
         <TextView
             android:id="@+id/detail_date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/dark_grey"
+            android:text="Aug 25, 2014"
             />
 
 
@@ -89,13 +97,21 @@
                     android:id="@+id/detail_high_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    />
+                    android:textSize="96sp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="21°"
+
+                    android:layout_gravity="center_horizontal" />
 
                 <TextView
                     android:id="@+id/detail_low_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    />
+                    android:textSize="48sp"
+                    android:textColor="@color/dark_grey"
+                    android:fontFamily="sans-serif-light"
+                    android:text="14°"
+                    android:layout_gravity="center_horizontal" />
             </LinearLayout>
 
             <LinearLayout
@@ -109,13 +125,15 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/detail_weather_imageview"
                     android:layout_gravity="center_horizontal"
+                    android:src="@drawable/art_clear"
                     />
 
                 <TextView
                     android:id="@+id/detail_forecast_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:text="Clear" />
 
             </LinearLayout>
 
@@ -125,16 +143,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_humidity_textview" />
+            android:id="@+id/detail_humidity_textview"
+            android:text="Humidity: 70%"
+            android:layout_marginTop="16dp"
+            android:textSize="22sp"
+            android:fontFamily="sans-serif-light"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_wind_textview" />
+            android:id="@+id/detail_wind_textview"
+            android:text="Wind: 3 km/h S"
+            android:layout_marginTop="4dp"
+            android:textSize="22sp"
+            android:fontFamily="sans-serif-light"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_pressure_textview" />
+            android:id="@+id/detail_pressure_textview"
+            android:text="1014 hPa"
+            android:layout_marginTop="4dp"
+            android:textSize="22sp"
+            android:fontFamily="sans-serif-light"/>
     </LinearLayout>
 </ScrollView>

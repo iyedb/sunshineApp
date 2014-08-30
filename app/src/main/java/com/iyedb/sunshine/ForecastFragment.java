@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -166,17 +165,17 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         */
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
 
-        listViewHeaderTv = (TextView) inflater.inflate(R.layout.list_item_forecast_location,
-                null, false);
+        //listViewHeaderTv = (TextView) inflater.inflate(R.layout.list_item_forecast_location,
+        //        null, false);
 
-        listViewHeaderTv.setText(Utility.getPreferredLocation(getActivity()));
-        mListView.addHeaderView(listViewHeaderTv);
+        //listViewHeaderTv.setText(Utility.getPreferredLocation(getActivity()));
+        //mListView.addHeaderView(listViewHeaderTv);
         mListView.setAdapter(mForecastAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                /*
                 if (position == 0) {
                     openLocationInMap();
                 } else {
@@ -190,6 +189,22 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     }
                     mSelectedItemPosition = position;
                 }
+                */
+
+
+                ForecastAdapter adapter =
+                        (ForecastAdapter) parent.getAdapter();
+
+                Cursor cursor = adapter.getCursor();
+
+
+                if (cursor != null && cursor.moveToPosition(position)) {
+                    ((Callback) getActivity()).onItemSelected(cursor.getString(COL_WEATHER_DATE));
+                }
+
+                //view.findViewById(R.id.list_item_more_info).setVisibility(View.VISIBLE);
+
+                mSelectedItemPosition = position;
             }
         });
 
@@ -214,7 +229,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onResume();
 
         Log.d(TAG, "onResume");
-        listViewHeaderTv.setText(Utility.getPreferredLocation(getActivity()));
+        //listViewHeaderTv.setText(Utility.getPreferredLocation(getActivity()));
 
         if (mLocation != null && !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
             Log.d(TAG, "onResume: restartLoader()");

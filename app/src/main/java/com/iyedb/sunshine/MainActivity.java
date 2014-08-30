@@ -133,6 +133,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                     .putExtra(DetailActivity.DATE_KEY, date);
 
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_to_left, R.anim.slide_out_to_left);
         }
 
 

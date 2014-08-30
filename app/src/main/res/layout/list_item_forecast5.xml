@@ -69,7 +69,6 @@
             android:textAppearance="?android:textAppearanceSmall"
             android:text="15" />
     </LinearLayout>
-
 </LinearLayout>
 
 

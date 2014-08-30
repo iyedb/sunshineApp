@@ -83,7 +83,7 @@ public class SettingsActivity extends PreferenceActivity
 
             } else {
                 // notify code that weather may be impacted
-                Log.d(TAG, "Notify uri changed" + WeatherContract.WeatherEntry.CONTENT_URI);
+                Log.d(TAG, "Notify uri changed:" + WeatherContract.WeatherEntry.CONTENT_URI);
                 getContentResolver().notifyChange(WeatherContract.WeatherEntry.CONTENT_URI, null);
             }
         }

@@ -294,6 +294,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mShareActionProvider =
                 (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
+        int a = Intent.FLAG_ACTIVITY_CLEAR_TOP;
         // Attach an intent to this ShareActionProvider.  You can update this at any time,
         // like when the user selects a new piece of data they might like to share.
         if (mShareActionProvider != null) {
