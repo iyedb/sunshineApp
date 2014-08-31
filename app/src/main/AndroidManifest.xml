@@ -47,6 +47,12 @@
             android:name=".data.WeatherProvider"
             android:authorities="com.iyedb.sunshine" />
 
+        <service android:name=".service.SunshineService"
+            android:logo="@mipmap/ic_launcher">
+        </service>
+
+        <receiver android:name=".service.SunshineService$AlarmReceiver" android:enabled="true"
+            android:exported="true"/>
 
     </application>
 

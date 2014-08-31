@@ -1,5 +1,8 @@
 package com.iyedb.sunshine;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 import com.iyedb.sunshine.data.WeatherContract;
 import com.iyedb.sunshine.data.WeatherContract.LocationEntry;
 import com.iyedb.sunshine.data.WeatherContract.WeatherEntry;
+import com.iyedb.sunshine.service.SunshineService;
 
 import java.util.Date;
 
@@ -243,8 +247,17 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void updateWeather() {
+
         String location = Utility.getPreferredLocation(getActivity());
-        new FetchWeatherTask(getActivity()).execute(location);
+        Intent intent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
+        intent.putExtra(SunshineService.LOCATION_KEY_EXTRA, location);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 12377, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager alarmManager =
+                (AlarmManager)getActivity().getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+        Log.d(TAG, "Refresh Alarm set");
     }
 
     @Override
