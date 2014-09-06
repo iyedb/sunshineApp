@@ -10,11 +10,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.iyedb.sunshine.sync.SunshineSyncAdapter;
+
 
 public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
     private final String TAG = MainActivity.class.getSimpleName();
     private boolean mTwoPane = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         ForecastFragment frag = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
         frag.useTodayView(!mTwoPane);
         Log.d(TAG, "OnCreate called");
+
     }
 
     @Override
@@ -64,6 +68,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume called");
+        SunshineSyncAdapter.initializeSyncAdapter(getApplicationContext());
 
     }
 
@@ -138,4 +143,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
 
 
     }
+
+
+
 }

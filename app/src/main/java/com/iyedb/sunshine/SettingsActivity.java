@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.iyedb.sunshine.data.WeatherContract;
-import com.iyedb.sunshine.service.SunshineService;
+import com.iyedb.sunshine.sync.SunshineSyncAdapter;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -78,10 +78,12 @@ public class SettingsActivity extends PreferenceActivity
 
         if ( !mBindingPreference ) {
             if (preference.getKey().equals(getString(R.string.pref_location_key))) {
-                String location = value.toString();
-                Intent intent = new Intent(getApplicationContext(), SunshineService.class);
-                intent.putExtra(SunshineService.LOCATION_KEY_EXTRA, location);
-                startService(intent);
+
+//                String location = value.toString();
+//                Intent intent = new Intent(getApplicationContext(), SunshineService.class);
+//                intent.putExtra(SunshineService.LOCATION_KEY_EXTRA, location);
+//                startService(intent);
+                SunshineSyncAdapter.syncImmediately(getApplicationContext());
 
             } else {
                 // notify code that weather may be impacted
