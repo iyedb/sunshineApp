@@ -18,6 +18,15 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/list_item_location_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Paris"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_marginBottom="8dp"/>
+        <TextView
             android:id="@+id/list_item_date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,7 +80,7 @@
             android:textAppearance="?android:textAppearanceLarge"
             android:fontFamily="sans-serif-condensed"
             android:text="Clear"
-            android:paddingTop="24dp"
+            android:paddingTop="32dp"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 

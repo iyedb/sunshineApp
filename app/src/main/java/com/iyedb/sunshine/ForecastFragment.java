@@ -320,8 +320,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         Log.d(TAG, "COLUMN_WEATHER_ID = " + Integer.toString(idx_weather_id));
         Log.d(TAG, "COLUMN_LOCATION_SETTING = " + Integer.toString(idx));
-        if (cursor.getCount() != 0)
-            Log.d(TAG, "onLoadFinished: loaded some data" );
+        cursor.moveToFirst();
+        cursor.getString(idx);
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            Log.d(TAG, "onLoadFinished: loaded some data for location " + cursor.getString(idx));
+        }
+
         else
             Log.d(TAG, "onLoadFinished: no data. Database Empty?!");
 

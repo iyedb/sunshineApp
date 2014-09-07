@@ -16,6 +16,14 @@
             android:minWidth="56dp"
             android:orientation="vertical" >
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paris"
+                android:id="@+id/detail_location_textView"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/dark_grey"
+                android:textSize="16sp" />
             <!-- Header: Day, Date -->
             <TextView
                 android:fontFamily="sans-serif-condensed"
@@ -23,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:minWidth="120dp"
                 android:layout_width="wrap_content"
-                android:textSize="24sp" />
+                android:text="Today"
+                android:textSize="24sp"/>
 
             <TextView
                 android:fontFamily="sans-serif-condensed"
@@ -31,7 +40,9 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:textColor="@color/dark_grey"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:text="Sep 7, 2014"/>
+
 
         </LinearLayout>
 
@@ -47,7 +58,8 @@
                 android:id="@+id/detail_high_textview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textSize="96sp" />
+                android:textSize="96sp"
+                android:text="24°"/>
 
             <TextView
                 android:id="@+id/detail_low_textview"
@@ -55,7 +67,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:textColor="@color/dark_grey"
-                android:textSize="48sp" />
+                android:textSize="48sp"
+                android:text="14°"/>
 
             <!-- Humidity, wind, pressure -->
             <TextView
@@ -88,12 +101,15 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="2">
 
             <ImageView
                 android:id="@+id/detail_weather_imageview"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
+                android:layout_width="wrap_content"
+                android:src="@drawable/art_clear"
+                android:layout_gravity="center_horizontal"/>
 
             <TextView
                 android:fontFamily="sans-serif-condensed"
@@ -101,7 +117,9 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:textColor="@color/dark_grey"
-                android:textAppearance="?android:textAppearanceLarge"/>
+                android:textAppearance="?android:textAppearanceLarge"
+                android:text="Clouds"
+                android:layout_gravity="center_horizontal"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
