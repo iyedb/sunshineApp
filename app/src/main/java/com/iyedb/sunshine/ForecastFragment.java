@@ -41,6 +41,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int COL_WEATHER_MIN_TEMP = 4;
     public static final int COL_WEATHER_WEATHER_ID = 5;
     public static final int COL_LOCATION_SETTING = 6;
+    public static final int COL_LOCATION_LAT = 7;
+    public static final int COL_LOCATION_LONG = 8;
+
 
     private final static String TAG = ForecastFragment.class.getSimpleName();
     private static final int FORECAST_LOADER = 0;
@@ -59,7 +62,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             WeatherEntry.COLUMN_MAX_TEMP,
             WeatherEntry.COLUMN_MIN_TEMP,
             WeatherEntry.COLUMN_WEATHER_ID,
-            LocationEntry.COLUMN_LOCATION_SETTING
+            LocationEntry.COLUMN_LOCATION_SETTING,
+            LocationEntry.COLUMN_COORD_LAT,
+            LocationEntry.COLUMN_COORD_LONG
     };
 
     private String mLocation;
@@ -76,7 +81,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     TextView listViewHeaderTv;
     ListView mListView;
     private int mSelectedItemPosition = ListView.INVALID_POSITION;
-    private final String POSITION_KEY = "postion";
+    private final String POSITION_KEY = "position";
 
     public ForecastFragment() {
     }
@@ -106,6 +111,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             updateWeather();
+            return true;
+        }
+        else if (id == R.id.action_show_on_map) {
+            openLocationInMap();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -231,7 +240,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onResume();
 
         Log.d(TAG, "onResume");
-        //listViewHeaderTv.setText(Utility.getPreferredLocation(getActivity()));
 
         if (mLocation != null && !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
             Log.d(TAG, "onResume: restartLoader()");
@@ -320,8 +328,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         Log.d(TAG, "COLUMN_WEATHER_ID = " + Integer.toString(idx_weather_id));
         Log.d(TAG, "COLUMN_LOCATION_SETTING = " + Integer.toString(idx));
-        cursor.moveToFirst();
-        cursor.getString(idx);
+
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             Log.d(TAG, "onLoadFinished: loaded some data for location " + cursor.getString(idx));
@@ -342,18 +349,43 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void openLocationInMap() {
 
-        String location = Utility.getPreferredLocation(getActivity());
+        //String location = Utility.getPreferredLocation(getActivity());
 
         Uri geoLocation = Uri.parse("geo:0:0?").buildUpon()
-                .appendQueryParameter("q", location).build();
+                .appendQueryParameter("q", mLocation).build();
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(geoLocation);
 
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         } else {
-            Log.d(TAG, "Could not show " + location + " on a map");
+            Log.d(TAG, "Could not show " + mLocation + " on a map");
         }
+
+        /*
+        if (null != mForecastAdapter) {
+            Cursor cursor = mForecastAdapter.getCursor();
+            if (cursor != null) {
+                cursor.moveToFirst();
+                String coordLat = cursor.getString(COL_LOCATION_LAT);
+                String coordLong = cursor.getString(COL_LOCATION_LONG);
+                Uri geoCoord = Uri.parse("geo:" + coordLat + "," + coordLong);
+
+                Intent mapintent = new Intent(Intent.ACTION_VIEW);
+                mapintent.setData(geoCoord);
+
+                if (mapintent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(mapintent);
+                } else {
+                    Log.d(TAG, "Could not show location on a map");
+                }
+
+            }
+        }
+        */
+
+
     }
 
     interface Callback {
