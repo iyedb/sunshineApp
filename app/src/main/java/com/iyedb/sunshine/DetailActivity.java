@@ -32,7 +32,7 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.weather_detail_container, fragment)
                     .commit();
         }
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 

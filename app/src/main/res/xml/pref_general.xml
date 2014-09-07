@@ -10,7 +10,6 @@
         android:singleLine="true"
         android:title="@string/pref_location_title" />
 
-
     <ListPreference
         android:defaultValue="@string/pref_unit_metric"
         android:dialogTitle="@string/pref_unit_type_dialog_title"
@@ -18,5 +17,13 @@
         android:entryValues="@array/pref_unit_type_entries_values"
         android:key="@string/pref_unit_key"
         android:title="@string/pref_unit_type_title" />
+
+    <CheckBoxPreference
+        android:title="@string/pref_enable_notifications_label"
+        android:key="@string/pref_enable_notifications_key"
+        android:summaryOff="@string/pref_enable_notifications_false"
+        android:summaryOn="@string/pref_enable_notifications_true"
+        android:defaultValue="@string/pref_enable_notifications_default" />
+
 
 </PreferenceScreen>
