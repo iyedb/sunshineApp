@@ -333,9 +333,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             cursor.moveToFirst();
             Log.d(TAG, "onLoadFinished: loaded some data for location " + cursor.getString(idx));
         }
-
-        else
+        else {
             Log.d(TAG, "onLoadFinished: no data. Database Empty?!");
+            SunshineSyncAdapter.syncImmediately(getActivity());
+        }
 
         if (mSelectedItemPosition != ListView.INVALID_POSITION)
             mListView.smoothScrollToPosition(mSelectedItemPosition);

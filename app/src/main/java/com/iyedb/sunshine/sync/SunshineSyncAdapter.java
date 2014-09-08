@@ -222,12 +222,13 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     .build();
 
             URL url = new URL(builtUri.toString());
+            Log.d(LOG_TAG, url.toString());
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
-
+            Log.d(LOG_TAG, "connected to weather server");
             // Read the input stream into a String
             InputStream inputStream = urlConnection.getInputStream();
 
