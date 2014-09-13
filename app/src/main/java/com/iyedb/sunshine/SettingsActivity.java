@@ -31,12 +31,10 @@ public class SettingsActivity extends PreferenceActivity
         super.onCreate(savedInstanceState);
         // Add 'general' preferences, defined in the XML file
         addPreferencesFromResource(R.xml.pref_general);
-
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_unit_key)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
     }
 
     /**
@@ -63,7 +61,6 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
         String stringValue = value.toString();
-
         if (preference instanceof ListPreference) {
             // For list preferences, look up the correct display value in
             // the preference's 'entries' list (since they have separate labels/values).
@@ -79,13 +76,11 @@ public class SettingsActivity extends PreferenceActivity
 
         if ( !mBindingPreference ) {
             if (preference.getKey().equals(getString(R.string.pref_location_key))) {
-
 //                String location = value.toString();
 //                Intent intent = new Intent(getApplicationContext(), SunshineService.class);
 //                intent.putExtra(SunshineService.LOCATION_KEY_EXTRA, location);
 //                startService(intent);
                 SunshineSyncAdapter.syncImmediately(getApplicationContext());
-
             } else {
                 // notify code that weather may be impacted
                 Log.d(TAG, "Notify uri changed:" + WeatherContract.WeatherEntry.CONTENT_URI);

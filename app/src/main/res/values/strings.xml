@@ -44,7 +44,7 @@
     <string name="pref_enable_notifications_label">Weather Notifications</string>
 
     <string name="pref_enable_notifications_true">Enabled</string>
-    <string name="pref_enable_notifications_false">Not Enabled</string>
+    <string name="pref_enable_notifications_false">Disabled</string>
     <string name="pref_enable_notifications_default" translatable="false">true</string>
 
 
@@ -93,5 +93,12 @@
     <!-- Strings related to Notification preference -->
     <string name="pref_last_notification">last_notification</string>
     <string name="pref_last_location">last_location</string>
+
+    <string name="pref_use_current_location_key" translatable="false">use_current_location</string>
+    <string name="pref_use_current_location_label">Use current location</string>
+
+    <string name="pref_use_current_location_true">Enabled</string>
+    <string name="pref_use_current_location_false">Disabled</string>
+    <string name="pref_use_current_location_default" translatable="false">true</string>
 
 </resources>

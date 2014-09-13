@@ -8,7 +8,9 @@
         android:inputType="text"
         android:key="@string/pref_location_key"
         android:singleLine="true"
-        android:title="@string/pref_location_title" />
+        android:title="@string/pref_location_title"
+        android:dependency="@string/pref_use_current_location_key"
+        />
 
     <ListPreference
         android:defaultValue="@string/pref_unit_metric"
@@ -24,6 +26,15 @@
         android:summaryOff="@string/pref_enable_notifications_false"
         android:summaryOn="@string/pref_enable_notifications_true"
         android:defaultValue="@string/pref_enable_notifications_default" />
+
+
+    <CheckBoxPreference
+        android:title="@string/pref_use_current_location_label"
+        android:key="@string/pref_use_current_location_key"
+        android:summaryOff="@string/pref_use_current_location_false"
+        android:summaryOn="@string/pref_use_current_location_true"
+        android:defaultValue="@string/pref_use_current_location_default"
+        android:disableDependentsState="true"/>
 
 
 </PreferenceScreen>
