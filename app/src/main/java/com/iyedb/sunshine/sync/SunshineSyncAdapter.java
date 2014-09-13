@@ -283,12 +283,12 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             if (DEBUG) {
                 Cursor cursor = getContext().getContentResolver().query(WeatherContract.WeatherEntry.CONTENT_URI,
-                        new String[]{WeatherContract.WeatherEntry._ID, WeatherContract.WeatherEntry.COLUMN_LOC_KEY, WeatherContract.WeatherEntry.COLUMN_WEATHER_ID},
+                        new String[]{WeatherContract.WeatherEntry._ID, WeatherEntry.COLUMN_DATETEXT, WeatherContract.WeatherEntry.COLUMN_LOC_KEY, WeatherContract.WeatherEntry.COLUMN_WEATHER_ID},
                         null,
                         null,
                         null);
 
-                Log.d(LOG_TAG, "Weather table contents:");
+                Log.d(LOG_TAG, "Weather table contents:" + cursor.getCount());
                 while (cursor.moveToNext()) {
 
                     ContentValues resultValues = new ContentValues();
@@ -313,7 +313,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                         null);
 
 
-                Log.d(LOG_TAG, "Location table contents:");
+                Log.d(LOG_TAG, "Location table contents:" + cursorLoc.getCount());
                 while (cursorLoc.moveToNext()) {
 
                     ContentValues resultValues = new ContentValues();

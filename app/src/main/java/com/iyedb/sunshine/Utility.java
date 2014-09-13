@@ -25,8 +25,19 @@ public class Utility {
 
     public static String getPreferredLocation(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(context.getString(R.string.pref_location_key),
+        /*return prefs.getString(context.getString(R.string.pref_location_key),
+                context.getString(R.string.pref_location_default_val));*/
+        return  prefs.getString(context.getString(R.string.pref_last_location),
                 context.getString(R.string.pref_location_default_val));
+    }
+
+    public static void saveLocationPref(Context ctx, String location) {
+
+        String lastLocationPref = ctx.getString(R.string.pref_last_location);
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(ctx)
+                .edit();
+        editor.putString(lastLocationPref, location);
+        editor.apply();
     }
 
     public static boolean isMetric(Context context) {

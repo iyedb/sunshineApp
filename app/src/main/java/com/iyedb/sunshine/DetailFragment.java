@@ -261,6 +261,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mForecastStr = String.format("%s - %s - %s - %s/%s",
                 mLocation, dateString, weatherDescription, high, low);
 
+
         Log.d(LOG_TAG, "Forecast String: " + mForecastStr);
 
         if (mShareActionProvider != null)
