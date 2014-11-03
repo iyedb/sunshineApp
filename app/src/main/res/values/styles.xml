@@ -6,9 +6,15 @@
     </style>
 
     <!-- ActionBar style -->
-    <style name="ActionBar.Solid.Sunshine"
-        parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="ActionBar.Solid.Sunshine" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="background">@color/sunshine_blue</item>
+    </style>
+
+
+    <!-- Main activity action bar style -->
+    <style name="ActionBar.Solid.Sunshine.NoTitle" parent="@style/ActionBar.Solid.Sunshine">
+        <item name="displayOptions">useLogo|showHome</item>
+        <item name="logo">@drawable/ic_logo</item>
     </style>
 
     <!-- Main activity theme -->
@@ -16,12 +22,7 @@
         <item name="actionBarStyle">@style/ActionBar.Solid.Sunshine.NoTitle</item>
     </style>
 
-    <!-- Main activity action bar style -->
-    <style name="ActionBar.Solid.Sunshine.NoTitle"
-        parent="@style/ActionBar.Solid.Sunshine">
-        <item name="displayOptions">useLogo|showHome</item>
-        <item name="logo">@drawable/ic_logo</item>
-    </style>
+
 
     <style name="boldText">
         <item name="android:textStyle">bold|italic</item>

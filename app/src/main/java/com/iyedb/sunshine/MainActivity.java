@@ -157,9 +157,11 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
 
         Location location = mLocationManager.getLastKnownLocation(mProvider);
 
+        String locality = null;
             List<Address> addresses = mGeoCoder.getFromLocation(location.getLatitude(),
                     location.getLongitude(), 1);
-            String locality = addresses.get(0).getLocality();
+            if (addresses.size() > 0)
+                locality = addresses.get(0).getLocality();
             return locality;
     }
 
@@ -174,7 +176,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             lastLocation = getLastLocationFix();
             Log.d(TAG, "Last location fix : " + lastLocation);
         } catch (IOException e) {
-            lastLocation = new String("");
+            lastLocation = new String();
             e.printStackTrace();
         }
 

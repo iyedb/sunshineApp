@@ -13,15 +13,17 @@
         <item name="android:background">@color/sunshine_blue</item>
     </style>
 
-    <!-- Main activity theme -->
-    <style name="ForecastTheme" parent="AppTheme">
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Sunshine.NoTitle</item>
-    </style>
-
     <!-- Main activity action bar style -->
     <style name="ActionBar.Solid.Sunshine.NoTitle" parent="@style/ActionBar.Solid.Sunshine">
         <item name="android:displayOptions">showHome|useLogo</item>
         <item name="android:logo">@drawable/ic_logo</item>
     </style>
+
+    <!-- Main activity theme -->
+    <style name="ForecastTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Sunshine.NoTitle</item>
+    </style>
+
+
 
 </resources>

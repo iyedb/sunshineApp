@@ -4,6 +4,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.iyedb.sunshine">
 
+
+
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Permissions for the sync adapter -->
     <uses-permission
@@ -40,7 +42,7 @@
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.iyedb.sunshine.MyActivity" />
+                android:value="com.iyedb.sunshine.MainActivity" />
         </activity>
 
         <activity
